@@ -8,23 +8,27 @@ import Item from './Item';
 
 class List extends PureComponent {
     render() {
+        console.log(this.props.todos);
         return (<ul>
             <Item>A test item</Item>
-            {this.props.todos && this.props.todos.map((todo, i) => {
-                return <Item key={i}>{todo.text}</Item>
+            {this.props.todos && Object.keys(this.props.todos).map(key => {
+                return <Item key={key} id={key}>{this.props.todos[key].text}</Item>
             })}
         </ul>);
     }
 }
 
 List.propsTypes = {
-    todos: PropTypes.array,
+    todos: PropTypes.object,
     todoActions: PropTypes.object
 }
 
-const mapStateToProps = state => ({
-        todos: state.todos
-    })
+const mapStateToProps = state => {
+    console.log('list state', state)
+    return {
+        todos: state.manager.todos
+    }
+}
 
 const mapDispatchToProps = dispatch => ({
     todoActions: bindActionCreators(actions, dispatch)

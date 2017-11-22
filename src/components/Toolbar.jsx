@@ -11,17 +11,23 @@ class Toolbar extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    onSubmit() {
-        this.props.todoActions.addTodo({
-                text: 'new Todo'
-            })
+    onSubmit(e) {
+        e.preventDefault();
+        const result = {};
+
+        result[Math.floor(Math.random()*100)] = {
+            text: this._input.value
+        };
+        
+        this.props.todoActions.addTodo(result);
+        this._input.value = "";
     }
     
     render() {
         return (
             <div>
-                <form>
-                    <input type="text" placeholder="Add an item" onChange={this.onSubmit}/>
+                <form onSubmit={this.onSubmit}>
+                    <input type="text" placeholder="Add an item" ref={c => this._input = c}/>
                     <button>X</button>
                 </form>
             </div>
@@ -30,7 +36,7 @@ class Toolbar extends Component {
 }
 
 Toolbar.propTypes = {
-    todos: PropTypes.array
+    todos: PropTypes.object
 }
 
 const mapStateToProps = state => ({
