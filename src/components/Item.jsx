@@ -26,7 +26,7 @@ class Item extends PureComponent {
         } = this.props;
 
         return(
-            <li>
+            <li className="todo-listitem">
                 <input type='checkbox' onChange={this.onChange}/>
                     {children}
                 <button onClick={this.onArchiveClick}>X</button>
