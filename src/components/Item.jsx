@@ -58,15 +58,21 @@ class Item extends PureComponent {
         const {
             text,
             completed,
+            archived,
             id
         } = this.props;
 
+        const styles = {
+            color: isArchived(archived, id) ? '#BDBDBD' : null
+        }
+
         return(
             <ListItem 
-                className="todo-listitem" 
+                className="todo-listitem"
+                style={styles}
                 primaryText={text}
-                leftCheckbox={<Checkbox onCheck={this.onCheck} checked={isCompleted(completed, id)} />}
-                rightIconButton={<IconButton tooltip="archive todo" onClick={this.onArchiveClick}><NavigationClose /></IconButton>}
+                leftCheckbox={<Checkbox onCheck={this.onCheck} checked={isCompleted(completed, id)} disabled={isArchived(archived, id)} />}
+                rightIconButton={<IconButton tooltip="archive todo" onClick={this.onArchiveClick} iconStyle={styles}><NavigationClose /></IconButton>}
             />
         )
     } 
