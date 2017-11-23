@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { firebase, helpers } from 'react-redux-firebase';
 
+import { ListItem } from 'material-ui/List';
+import Checkbox from 'material-ui/Checkbox';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import IconButton from 'material-ui/IconButton';
+
 const { dataToJS } = helpers;
 
 /**
@@ -29,7 +34,7 @@ class Item extends PureComponent {
     constructor(){
         super();
 
-        this.onChange = this.onChange.bind(this);
+        this.onCheck = this.onCheck.bind(this);
         this.onArchiveClick = this.onArchiveClick.bind(this);
     }
 
@@ -41,7 +46,7 @@ class Item extends PureComponent {
         firebase.set(`/archived/${id}`, { archived: value })
     }
 
-    onChange() {
+    onCheck() {
         const { firebase, id, completed } = this.props;
         const value = !isCompleted(completed, id);
 
@@ -51,23 +56,24 @@ class Item extends PureComponent {
 
     render() {
         const {
-            children,
+            text,
             completed,
             id
         } = this.props;
 
         return(
-            <li className="todo-listitem">
-                <input type='checkbox' onChange={this.onChange} checked={isCompleted(completed, id)}/>
-                    {children}
-                <button onClick={this.onArchiveClick}>X</button>
-            </li>
+            <ListItem 
+                className="todo-listitem" 
+                primaryText={text}
+                leftCheckbox={<Checkbox onCheck={this.onCheck} checked={isCompleted(completed, id)} />}
+                rightIconButton={<IconButton tooltip="archive todo" onClick={this.onArchiveClick}><NavigationClose /></IconButton>}
+            />
         )
     } 
 }
 
 Item.propTypes = {
-    children: PropTypes.node,
+    text: PropTypes.string,
     id: PropTypes.string,
     todos: PropTypes.object,
     completed: PropTypes.object,

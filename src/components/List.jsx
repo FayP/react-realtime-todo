@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { firebase, helpers } from 'react-redux-firebase';
 
+import { List } from 'material-ui/List';
+
 import Item from './Item';
 
 const { dataToJS } = helpers;
 
-class List extends PureComponent {
+class TodoList extends PureComponent {
     render() {
-        return (<ul>
+        return (<List className="App-todolist">
             {this.props.todos && Object.keys(this.props.todos).map(key => {
-                return <Item key={key} id={key}>{this.props.todos[key].text}</Item>
+                return <Item key={key} id={key} text={this.props.todos[key].text} />
             })}
-        </ul>);
+        </List>);
     }
 }
 
@@ -26,7 +28,7 @@ List.propsTypes = {
 
 const WrappedList = firebase([
     '/todos'
-])(List)
+])(TodoList)
 
 export default connect(
     ({firebase}) => ({

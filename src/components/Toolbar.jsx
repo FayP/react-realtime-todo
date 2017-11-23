@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { firebase, helpers } from 'react-redux-firebase';
 
-const { dataToJS } = helpers
+import TextField from 'material-ui/TextField';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import IconButton from 'material-ui/IconButton';
+import { Toolbar } from 'material-ui/Toolbar';
 
-class Toolbar extends Component {
+const { dataToJS } = helpers;
+
+class TodoToolbar extends Component {
     constructor() {
         super();
 
@@ -22,12 +27,14 @@ class Toolbar extends Component {
     
     render() {
         return (
-            <div>
+            <Toolbar>
                 <form onSubmit={this.onSubmit}>
-                    <input type="text" placeholder="Add an item" ref={c => this._input = c}/>
-                    <button>X</button>
+                    <TextField type="text" placeholder="Add an item" ref={c => this._input = c} />
+                    <IconButton tooltip="close">
+                        <NavigationClose />
+                    </IconButton>
                 </form>
-            </div>
+            </Toolbar>
         )
     }
 }
@@ -41,7 +48,7 @@ Toolbar.propTypes = {
 
 const WrappedToolbar = firebase([
     '/todos'
-])(Toolbar)
+])(TodoToolbar)
 
 export default connect(
     ({firebase}) => ({

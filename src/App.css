@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
+
+.App {
+    text-align: center;
+}
+
+.App-header {
+    background-color: #0097A7;
+    min-height: 130px;
+    padding: 20px;
+    color: white;
+}
+
+.App-title {
+    font-size: 4em;
+    font-family: 'Pacifico', cursive;
+    font-weight: 100;
+    margin-bottom: 20px;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+.App-listcontainer {
+    display: flex;
+    justify-content: center;
+}
+
+.App-todolist {
+    width: 100%;
+}
+  
