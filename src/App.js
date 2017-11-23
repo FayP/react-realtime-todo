@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 
 import './App.css';
 
-import TodoToolbar from './components/Toolbar';
-import TodoList from './components/List';
+import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
+import TodoToolbar from './components/TodoToolbar';
+import TodoList from './components/TodoList';
+import TodoFooter from './components/TodoFooter';
 
 class App extends Component {
   render() {
@@ -15,7 +18,11 @@ class App extends Component {
         <section>
           <TodoToolbar />
           <div className="App-listcontainer">
-            <TodoList />
+            <Paper zDepth={1} className="App-listcontainer--paper">
+              <TodoList />
+              <Divider />
+              <TodoFooter />
+            </Paper>
           </div>
         </section>
       </div>

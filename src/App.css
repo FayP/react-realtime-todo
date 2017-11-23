@@ -27,6 +27,13 @@
     justify-content: center;
 }
 
-.App-todolist {
+.App-listcontainer--paper {
     width: 100%;
+    max-width: 600px;
+}
+
+@media( min-width: 600px ){
+    .App-listcontainer {
+        margin-top: 20px;
+    }
 }
