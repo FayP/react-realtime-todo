@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators} from 'redux';
 import { firebase, helpers } from 'react-redux-firebase';
-import * as actions from '../actions/actions';
 
-const { pathToJS, dataToJS } = helpers
+const { dataToJS } = helpers
 
 class Toolbar extends Component {
     constructor() {
@@ -15,9 +13,10 @@ class Toolbar extends Component {
     }
 
     onSubmit(e) {
+        const { firebase } = this.props;
         e.preventDefault();
         
-        this.props.firebase.push(`/todos`, { text: this._input.value })
+        firebase.push(`/todos`, { text: this._input.value })
         this._input.value = "";
     }
     
@@ -39,14 +38,6 @@ Toolbar.propTypes = {
         push: PropTypes.func.isRequired
       })
 }
-
-// const mapStateToProps = state => ({
-//         todos: state.todos
-//     })
-
-// const mapDispatchToProps = dispatch => ({
-//     todoActions: bindActionCreators(actions, dispatch)
-//    })
 
 const WrappedToolbar = firebase([
     '/todos'

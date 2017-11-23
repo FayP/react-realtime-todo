@@ -1,17 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { firebase, helpers } from 'react-redux-firebase';
-import * as actions from '../actions/actions';
 
 import Item from './Item';
 
-const { dataToJS } = helpers
+const { dataToJS } = helpers;
 
 class List extends PureComponent {
     render() {
-        console.log(this.props);
         return (<ul>
             {this.props.todos && Object.keys(this.props.todos).map(key => {
                 return <Item key={key} id={key}>{this.props.todos[key].text}</Item>
@@ -22,19 +19,10 @@ class List extends PureComponent {
 
 List.propsTypes = {
     todos: PropTypes.object,
-    todoActions: PropTypes.object
+    firebase: PropTypes.shape({
+        push: PropTypes.func.isRequired
+      })
 }
-
-// const mapStateToProps = state => {
-//     console.log('list state', state)
-//     return {
-//         todos: state.todos
-//     }
-// }
-
-// const mapDispatchToProps = dispatch => ({
-//     todoActions: bindActionCreators(actions, dispatch)
-// })
 
 const WrappedList = firebase([
     '/todos'
