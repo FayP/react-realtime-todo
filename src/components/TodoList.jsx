@@ -6,28 +6,9 @@ import { firebase, helpers } from 'react-redux-firebase';
 import { List } from 'material-ui/List';
 
 import Item from './TodoItem';
+import { isCompleted, isArchived } from './helpers.js';
 
 const { dataToJS, isLoaded, isEmpty } = helpers;
-
-/**
- * @public
- * Test if the archived state of a given id is true.
- * 
- * @param {Object} archived 
- * @param {String} id
- * @return {Bool} 
- */
-const isArchived = (archived, id) => !!archived && !!archived[id] && !!archived[id].archived;
-
-/**
- * @public
- * Test if the completed state of a given id is true.
- * 
- * @param {Object} completed 
- * @param {String} id 
- * @return {Bool}
- */
-const isCompleted = (completed, id) => !!completed && !!completed[id] && !!completed[id].completed; 
 
 const shouldBeDisplayed = (archived, completed, id, selectedView) => {
     if(isArchived(archived, id)){
@@ -38,11 +19,11 @@ const shouldBeDisplayed = (archived, completed, id, selectedView) => {
         return true;
     }
 
-    if(isCompleted(completed, id) && selectedView === 'completed'){
-        return true;
-    }
-
-    if(!isCompleted(completed, id) && selectedView === 'active'){
+    if(isCompleted(completed, id)) {
+        if(selectedView === 'completed'){
+            return true;
+        }
+    } else if(selectedView === 'active') {
         return true;
     }
 

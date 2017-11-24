@@ -8,17 +8,10 @@ import Checkbox from 'material-ui/Checkbox';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 
+import { isCompleted } from './helpers.js';
+
 const { dataToJS } = helpers;
 
-/**
- * @public
- * Test if the completed state of a given id is true.
- * 
- * @param {Object} completed 
- * @param {String} id 
- * @return {Bool}
- */
-const isCompleted = (completed, id) => !!completed && !!completed[id] && !!completed[id].completed; 
 
 class Item extends PureComponent {
     constructor(){

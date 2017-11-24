@@ -18,10 +18,6 @@
     margin-bottom: 20px;
 }
 
-.App-intro {
-    font-size: large;
-}
-
 .App-listcontainer {
     display: flex;
     justify-content: center;
