@@ -20,16 +20,6 @@ const { dataToJS } = helpers;
  */
 const isCompleted = (completed, id) => !!completed && !!completed[id] && !!completed[id].completed; 
 
-/**
- * @public
- * Test if the archived state of a given id is true.
- * 
- * @param {Object} archived 
- * @param {String} id
- * @return {Bool} 
- */
-const isArchived = (archived, id) => !!archived && !!archived[id] && !!archived[id].archived; 
-
 class Item extends PureComponent {
     constructor(){
         super();
@@ -39,11 +29,10 @@ class Item extends PureComponent {
     }
 
     onArchiveClick() {
-        const { firebase, id, archived } = this.props;
-        const value = !isArchived(archived, id);
+        const { firebase, id } = this.props;
         
-        // If the current item is marked as archived, unarchive it
-        firebase.set(`/archived/${id}`, { archived: value })
+        // Archiving is one way so always set to to true
+        firebase.set(`/archived/${id}`, { archived: true })
     }
 
     onCheck() {
@@ -58,20 +47,21 @@ class Item extends PureComponent {
         const {
             text,
             completed,
-            archived,
-            id
+            id,
+            style
         } = this.props;
 
         const styles = {
-            color: isArchived(archived, id) ? '#BDBDBD' : null
+            color: isCompleted(completed, id) ? '#BDBDBD' : null,
+            ...style
         }
 
         return(
-            <ListItem 
+            <ListItem
                 className="todo-listitem"
                 style={styles}
                 primaryText={text}
-                leftCheckbox={<Checkbox onCheck={this.onCheck} checked={isCompleted(completed, id)} disabled={isArchived(archived, id)} />}
+                leftCheckbox={<Checkbox onCheck={this.onCheck} checked={isCompleted(completed, id)} />}
                 rightIconButton={<IconButton tooltip="archive todo" onClick={this.onArchiveClick} iconStyle={styles}><NavigationClose /></IconButton>}
             />
         )
@@ -97,8 +87,7 @@ const WrappedItem = firebase([
 export default connect(
     ({firebase}) => ({
         todos: dataToJS(firebase, 'todos'),
-        completed: dataToJS(firebase, 'completed'),
-        archived: dataToJS(firebase, 'archived')
+        completed: dataToJS(firebase, 'completed')
     })
 )(WrappedItem);
 

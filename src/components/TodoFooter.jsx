@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { firebase, helpers } from 'react-redux-firebase';
+import { bindActionCreators} from 'redux';
+import * as actions from '../actions/actions';
 
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import ActionDoneAll from 'material-ui/svg-icons/action/done-all';
@@ -9,25 +11,34 @@ import ActionList from 'material-ui/svg-icons/action/list';
 import ImageTimelapse from 'material-ui/svg-icons/image/timelapse';
 
 const { dataToJS } = helpers;
+const viewList = [
+    'all',
+    'active',
+    'completed'
+];
 
 class TodoFooter extends PureComponent {
-    state = {
-        selectedIndex: 0,
+    constructor(props){
+        super(props);
+
+        this.state = {
+            selectedIndex: viewList[props.selectedView] || 0
+        }
     }
 
     onSelect = index => {
+        this.props.changeView.changeView({ selectedView: viewList[index]})
         this.setState({
             selectedIndex: index
         })
     }
 
     render(){
-        const { firebase, todos, completed } = this.props;
         return (
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
-                <BottomNavigationItem label="all" icon={<ActionList />} onClick={() => this.onSelect(0)} />
-                <BottomNavigationItem label="active" icon={<ImageTimelapse />} onClick={() => this.onSelect(1)} />
-                <BottomNavigationItem label="completed" icon={<ActionDoneAll />} onClick={() => this.onSelect(2)} />
+                <BottomNavigationItem label={viewList[0]} icon={<ActionList />} onClick={() => this.onSelect(0)} />
+                <BottomNavigationItem label={viewList[1]} icon={<ImageTimelapse />} onClick={() => this.onSelect(1)} />
+                <BottomNavigationItem label={viewList[2]} icon={<ActionDoneAll />} onClick={() => this.onSelect(2)} />
             </BottomNavigation>
         );
     }
@@ -35,10 +46,7 @@ class TodoFooter extends PureComponent {
 
 TodoFooter.propsTypes = {
     todos: PropTypes.object,
-    completed: PropTypes.object,
-    firebase: PropTypes.shape({
-        push: PropTypes.func.isRequired
-      })
+    completed: PropTypes.object
 }
 
 const WrappedList = firebase([
@@ -46,8 +54,15 @@ const WrappedList = firebase([
     '/completed'
 ])(TodoFooter)
 
+
+const mapDispatchToProps = dispatch => ({
+    changeView: bindActionCreators(actions, dispatch)
+})
+
 export default connect(
-    ({firebase}) => ({
-        todos: dataToJS(firebase, 'todos')
-    })
+    (state) => ({
+            todos: dataToJS(state.firebase, 'todos'),
+            selectedView: state.viewManager.selectedView
+        }),
+    mapDispatchToProps
 )(WrappedList);
