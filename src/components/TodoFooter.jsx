@@ -46,7 +46,8 @@ class TodoFooter extends PureComponent {
 
 TodoFooter.propsTypes = {
     todos: PropTypes.object,
-    completed: PropTypes.object
+    completed: PropTypes.object,
+    selectedView: PropTypes.string
 }
 
 const WrappedList = firebase([

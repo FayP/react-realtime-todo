@@ -66,6 +66,7 @@ Item.propTypes = {
     id: PropTypes.string,
     todos: PropTypes.object,
     completed: PropTypes.object,
+    archived: PropTypes.object,
     firebase: PropTypes.shape({
         push: PropTypes.func.isRequired
       })

@@ -10,6 +10,18 @@ import { isCompleted, isArchived } from './helpers.js';
 
 const { dataToJS, isLoaded, isEmpty } = helpers;
 
+/**
+ * @private
+ * Determine if the current item should be in view based on 
+ * the selected view and if it's completed or archived.
+ * 
+ * @param {Object} archived List of archived tasks
+ * @param {Object} completed List of completed tasks
+ * @param {String} id id of current task
+ * @param {String} selectedView The current selected view
+ * 
+ * @return
+ */
 const shouldBeDisplayed = (archived, completed, id, selectedView) => {
     if(isArchived(archived, id)){
         return false;
@@ -55,10 +67,9 @@ class TodoList extends PureComponent {
 
 TodoList.propsTypes = {
     todos: PropTypes.object,
-    selectedView: PropTypes.string,
-    firebase: PropTypes.shape({
-        push: PropTypes.func.isRequired
-      })
+    completed: PropTypes.object,
+    archived: PropTypes.object,
+    selectedView: PropTypes.string
 }
 
 const WrappedList = firebase([
@@ -67,10 +78,10 @@ const WrappedList = firebase([
 ])(TodoList)
 
 export default connect(
-    (state) => ({
-        todos: dataToJS(state.firebase, 'todos'),
-        archived: dataToJS(state.firebase, 'archived'),
-        completed: dataToJS(state.firebase, 'completed'),
-        selectedView: state.viewManager.selectedView
+    ({firebase, viewManager}) => ({
+        todos: dataToJS(firebase, 'todos'),
+        archived: dataToJS(firebase, 'archived'),
+        completed: dataToJS(firebase, 'completed'),
+        selectedView: viewManager.selectedView
     }),
 )(WrappedList);
